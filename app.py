@@ -10,7 +10,7 @@ def get_random_values():
         with open(file_path, 'r') as file:
             file_content = file.read()
 
-        return file_content.replace('\n', '<br>')
+        return file_content.replace('\n', '')
 
     except FileNotFoundError:
         return 'Error: File not found'
