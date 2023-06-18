@@ -1,21 +1,16 @@
-from flask import Flask, send_file
+import json
+from flask import Flask, Response
 
 app = Flask(__name__)
 
-@app.route('/random_values', methods=['GET'])
-def get_random_values():
-    file_path = 'random_values.txt'
-
-    try:
-        with open(file_path, 'r') as file:
-            file_content = file.read()
-
-        return file_content.replace('\n', '')
-
-    except FileNotFoundError:
-        return 'Error: File not found'
+@app.route('/data', methods=['GET'])
+def get_data():
+    with open('jss.json', 'r') as file:
+        data = json.load(file)
+    return Response(json.dumps(data), mimetype='application/json')
 
 if __name__ == '__main__':
     app.run()
+
 
 
