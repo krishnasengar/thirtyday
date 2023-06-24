@@ -1,15 +1,21 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request ,Response
 import json
 from datetime import date
 
 app = Flask(__name__)
 
 # Route to display the stored JSON data
-@app.route('/data', methods=['GET'])
+@app.route('/data/yoga', methods=['GET'])
 def get_data():
     with open('data.json', 'r') as file:
         data = json.load(file)
     return jsonify(data)
+
+@app.route('/data', methods=['GET'])
+def get_data():
+    with open('jss.json', 'r') as file:
+        data = json.load(file)
+    return Response(json.dumps(data), mimetype='application/json')
 
 # Route to store a value with the key as the current date
 @app.route('/store', methods=['POST'])
