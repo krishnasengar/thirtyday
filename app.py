@@ -5,7 +5,7 @@ from datetime import date
 app = Flask(__name__)
 
 # Route to display the stored JSON data
-@app.route('/data/yoga', methods=['GET'])
+@app.route('/yoga', methods=['GET'])
 def get_data():
     with open('data.json', 'r') as file:
         data = json.load(file)
