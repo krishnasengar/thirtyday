@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Route to display the stored JSON data
 @app.route('/yoga', methods=['GET'])
-def get_data():
+def get_data_yoga():
     with open('data.json', 'r') as file:
         data = json.load(file)
     return jsonify(data)
