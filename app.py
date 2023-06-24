@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request ,Response
 import json
-from datetime import date
+import datetime 
 
 app = Flask(__name__)
 
@@ -18,20 +18,36 @@ def get_data():
     return Response(json.dumps(data), mimetype='application/json')
 
 # Route to store a value with the key as the current date
-@app.route('/store', methods=['POST'])
-def store_data():
-    value = request.json.get('value')  # Extract value from JSON payload
-    today = str(date.today().day)
-
+def load_data():
     with open('data.json', 'r') as file:
         data = json.load(file)
+    return data
 
-    data[today] = value
-
+def save_data(data):
     with open('data.json', 'w') as file:
         json.dump(data, file)
 
-    return 'Value stored successfully.'
+def update_values(today, value):
+    data = load_data()
+
+    if data["d"] == today:
+        data["0"] = value
+    else:
+        for i in range(30, 0, -1):
+            data[str(i)] = data[str(i-1)]
+        data["1"] = data["0"]
+        data["0"] = value
+        data["d"]=today
+
+    save_data(data)
+
+@app.route('/update', methods=['POST'])
+def update_data():
+    today = datetime.datetime.now().day
+    value = request.json["value"]
+    update_values(today, value)
+    return "Data updated successfully!"
+
 
 # Route to retrieve the value of a specific date
 @app.route('/value/<number>', methods=['GET'])
